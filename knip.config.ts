@@ -8,6 +8,10 @@ const config: KnipConfig = {
 
   workspaces: {
     '.': {
+      // pnpm script names knip mistakes for binaries when it parses
+      // `pnpm -C <dir> <script>` invocations in package.json / workflows
+      // (e.g. the `pnpm -C website build` step in deploy.yml).
+      ignoreBinaries: ['build'],
       // When this repo has React packages, install `react`/`@types/react` at the
       // root (so tsc/vitest can resolve them as peers) and ignore them here, since
       // knip can't attribute a root-level peer to a package import:

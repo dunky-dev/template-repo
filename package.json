@@ -9,9 +9,11 @@
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "knip": "knip",
+    "changeset": "changeset",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.0",
     "@types/node": "^22.10.2",
     "husky": "^9.1.7",
     "knip": "^6.15.0",
