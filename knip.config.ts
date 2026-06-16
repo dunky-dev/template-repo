@@ -1,0 +1,22 @@
+import type { KnipConfig } from 'knip'
+
+const config: KnipConfig = {
+  // Many package exports are public API (re-exported from each package's index)
+  // that knip can't see a consumer for in this repo, but which are used within
+  // their own module — keep those out of the "unused exports" report.
+  ignoreExportsUsedInFile: true,
+
+  workspaces: {
+    '.': {
+      // When this repo has React packages, install `react`/`@types/react` at the
+      // root (so tsc/vitest can resolve them as peers) and ignore them here, since
+      // knip can't attribute a root-level peer to a package import:
+      // ignoreDependencies: ['react', '@types/react'],
+    },
+    // Add per-package overrides here as the workspace grows, e.g. a package that
+    // re-exports another's surface without importing it directly:
+    // 'packages/native': { ignoreDependencies: ['@chimba-ui/core'] },
+  },
+}
+
+export default config
