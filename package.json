@@ -1,6 +1,7 @@
 {
   "name": "chimba-ui-repo",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "test": "vitest",

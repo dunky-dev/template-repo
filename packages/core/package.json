@@ -1,6 +1,7 @@
 {
   "name": "@chimba-ui/core",
   "version": "0.0.0",
+  "license": "MIT",
   "files": [
     "src",
     "dist"
