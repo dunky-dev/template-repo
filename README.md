@@ -39,3 +39,7 @@ Use it as a GitHub **template repository** (_Use this template_) or copy it with
   on `packages/**/src/**`) — use named exports for public API.
 - **Worktrees** for parallel work: create as a sibling dir and run `pnpm install`
   in each (worktrees don't share `node_modules`).
+
+## License
+
+[MIT](./LICENSE)
