@@ -19,7 +19,7 @@ const config: KnipConfig = {
     },
     // Add per-package overrides here as the workspace grows, e.g. a package that
     // re-exports another's surface without importing it directly:
-    // 'packages/native': { ignoreDependencies: ['@chimba-ui/core'] },
+    // 'packages/native': { ignoreDependencies: ['@dunky-dev/core'] },
   },
 }
 

@@ -36,7 +36,7 @@ jobs:
       - name: Build site
         # base must match the path the site is served under so asset URLs
         # resolve, e.g. /<repo>/ for GitHub Pages project sites, or the
-        # rewrite prefix for the chimba-ui.com multi-zone setup.
+        # rewrite prefix for the dunky-dev.com multi-zone setup.
         env:
           BASE_PATH: /TODO-set-base-path/
         # TODO: point this at the site package, e.g. `pnpm -C website build`
