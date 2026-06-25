@@ -2,47 +2,38 @@ name: Release
 
 on:
   push:
-    branches: [main]
-
-# Needed for the changesets action to open the "Version Packages" PR
-# and to publish with npm provenance.
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
+    branches:
+      - main
 
 concurrency:
-  group: release
-  cancel-in-progress: false
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # create tags + GitHub releases, push the version PR branch
+      pull-requests: write # open/update the "Version Packages" PR
+      id-token: write # npm provenance
     steps:
       - uses: actions/checkout@v4
-
-      - uses: pnpm/action-setup@v4
         with:
-          version: 10.20.0
-
-      - uses: actions/setup-node@v4
+          fetch-depth: 0
+      - uses: ./.github/actions/ci-setup
         with:
-          node-version: 24
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      # Opens/updates a "Version Packages" PR when changesets are pending.
-      # When that PR is merged (changesets consumed), `publish` runs and
-      # pushes the bumped packages to npm.
       - name: Create release PR or publish
+        id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm changeset version
-          publish: pnpm changeset publish
+          version: pnpm changeset:version
+          publish: pnpm changeset:publish
+          commit: 'chore(release): version packages'
+          title: 'chore(release): version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'

@@ -1,33 +1,71 @@
-name: CI
+name: CI checks
 
+# The full CI suite as parallel jobs. Runs directly on every PR, and is also
+# reused by release.yml as a gate before releasing (workflow_call).
 on:
-  push:
-    branches: [main]
   pull_request:
+    branches: ['**']
+  workflow_call:
+
+# Fork PRs run without secrets; these checks don't need any.
+permissions:
+  contents: read
+
+# One run per PR (or per ref): a new push cancels the in-progress run for the
+# same PR so force-pushes don't pile up. github.ref is unique per PR
+# (refs/pull/<n>/merge), so PRs never cancel each other.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm build
 
-      - uses: pnpm/action-setup@v4
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm test:ci
+
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm typecheck
+
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm lint
+
+  format:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm format:check
+
+  versioning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
         with:
-          version: 10.20.0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test --run
+          # Full history so changeset can diff against the base branch.
+          fetch-depth: 0
+      - uses: ./.github/actions/ci-setup
+      - run: pnpm changeset status --since=origin/main
