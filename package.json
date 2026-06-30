@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest",
     "typecheck": "tsc --noEmit",
-    "lint": "oxlint .",
+    "lint": "oxlint --ignore-pattern '.worktrees' .",
     "format": "oxfmt .",
     "format:check": "oxfmt --check .",
     "knip": "knip",
