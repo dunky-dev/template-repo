@@ -15,9 +15,6 @@ runs:
         git config user.name github-actions
         git config user.email github-actions[bot]@users.noreply.github.com
 
-    # No version pin: pnpm/action-setup reads it from package.json's
-    # "packageManager" field, the single source of truth (pinning both errors
-    # when they drift — see ERR_PNPM_BAD_PM_VERSION).
     - name: setup pnpm
       uses: pnpm/action-setup@v4
 
