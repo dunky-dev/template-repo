@@ -4,7 +4,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "build": "pnpm -r --if-present run build",
     "test": "vitest",
+    "test:ci": "vitest run",
     "typecheck": "tsc --noEmit",
     "lint": "oxlint --ignore-pattern '.worktrees' .",
     "format": "oxfmt .",
