@@ -16,7 +16,7 @@ Use it as a GitHub **template repository** (_Use this template_) or copy it with
 | **TypeScript**  | `tsconfig.json`                 | Strict, ESM, bundler resolution. One `@dunky-dev/core` path alias.                       |
 | **Vitest**      | `vitest.config.ts`              | Node test environment.                                                                   |
 | **pnpm**        | `.npmrc`, `pnpm-workspace.yaml` | Workspace tuning; packages live under `packages/**`.                                     |
-| **CI**          | `.github/workflows/ci.yml`      | Lint + typecheck + test on push/PR (Node 24, pnpm 10.20.0).                              |
+| **CI**          | `.github/workflows/ci.yml`      | Lint + typecheck + test on push/PR (Node 24, pnpm 11.10.0).                              |
 
 ## License
 
